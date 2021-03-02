@@ -1,19 +1,19 @@
-package rpc_submitter
+package rpc_user
 
 import (
 	"github.com/ecnuvj/vhoj_common/pkg/common/constants/rpc_config"
-	"github.com/ecnuvj/vhoj_rpc/model/submitterpb"
+	"github.com/ecnuvj/vhoj_rpc/model/userpb"
 	"google.golang.org/grpc"
 	"log"
 )
 
-var SubmitServiceClient submitterpb.SubmitServiceClient
+var UserServiceClient userpb.UserServiceClient
 
 func Init() {
-	conn, err := grpc.Dial(rpc_config.SubmitterRpc.GetFullAddress(), grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(rpc_config.UserRpc.GetFullAddress(), grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	log.Println("submitter rpc service connect...")
-	SubmitServiceClient = submitterpb.NewSubmitServiceClient(conn)
+	log.Println("user rpc service connect...")
+	UserServiceClient = userpb.NewUserServiceClient(conn)
 }
