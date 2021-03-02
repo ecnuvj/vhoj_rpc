@@ -7,7 +7,7 @@
 package crawlerpb
 
 import (
-	base "github.com/ecnuvj/vhoj_crawler/pkg/sdk/base"
+	base "github.com/ecnuvj/vhoj_rpc/model/base"
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
