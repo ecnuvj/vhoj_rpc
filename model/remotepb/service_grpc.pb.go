@@ -19,6 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 type RemoteServiceClient interface {
 	SubmitCode(ctx context.Context, in *SubmitCodeRequest, opts ...grpc.CallOption) (*SubmitCodeResponse, error)
 	CrawlProblem(ctx context.Context, in *CrawlProblemRequest, opts ...grpc.CallOption) (*CrawlProblemResponse, error)
+	QueryCrawlResult(ctx context.Context, in *QueryCrawlResultRequest, opts ...grpc.CallOption) (*QueryCrawlResultResponse, error)
 }
 
 type remoteServiceClient struct {
@@ -47,12 +48,22 @@ func (c *remoteServiceClient) CrawlProblem(ctx context.Context, in *CrawlProblem
 	return out, nil
 }
 
+func (c *remoteServiceClient) QueryCrawlResult(ctx context.Context, in *QueryCrawlResultRequest, opts ...grpc.CallOption) (*QueryCrawlResultResponse, error) {
+	out := new(QueryCrawlResultResponse)
+	err := c.cc.Invoke(ctx, "/RemoteService/QueryCrawlResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RemoteServiceServer is the server API for RemoteService service.
 // All implementations must embed UnimplementedRemoteServiceServer
 // for forward compatibility
 type RemoteServiceServer interface {
 	SubmitCode(context.Context, *SubmitCodeRequest) (*SubmitCodeResponse, error)
 	CrawlProblem(context.Context, *CrawlProblemRequest) (*CrawlProblemResponse, error)
+	QueryCrawlResult(context.Context, *QueryCrawlResultRequest) (*QueryCrawlResultResponse, error)
 	mustEmbedUnimplementedRemoteServiceServer()
 }
 
@@ -65,6 +76,9 @@ func (UnimplementedRemoteServiceServer) SubmitCode(context.Context, *SubmitCodeR
 }
 func (UnimplementedRemoteServiceServer) CrawlProblem(context.Context, *CrawlProblemRequest) (*CrawlProblemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CrawlProblem not implemented")
+}
+func (UnimplementedRemoteServiceServer) QueryCrawlResult(context.Context, *QueryCrawlResultRequest) (*QueryCrawlResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryCrawlResult not implemented")
 }
 func (UnimplementedRemoteServiceServer) mustEmbedUnimplementedRemoteServiceServer() {}
 
@@ -115,6 +129,24 @@ func _RemoteService_CrawlProblem_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RemoteService_QueryCrawlResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryCrawlResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RemoteServiceServer).QueryCrawlResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/RemoteService/QueryCrawlResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RemoteServiceServer).QueryCrawlResult(ctx, req.(*QueryCrawlResultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _RemoteService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "RemoteService",
 	HandlerType: (*RemoteServiceServer)(nil),
@@ -126,6 +158,10 @@ var _RemoteService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CrawlProblem",
 			Handler:    _RemoteService_CrawlProblem_Handler,
+		},
+		{
+			MethodName: "QueryCrawlResult",
+			Handler:    _RemoteService_QueryCrawlResult_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

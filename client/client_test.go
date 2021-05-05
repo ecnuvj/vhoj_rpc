@@ -49,7 +49,7 @@ func TestCrawlProblem(t *testing.T) {
 	rpc_remote.Init()
 	req := &remotepb.CrawlProblemRequest{
 		RemoteOj:        int32(remote_oj.JSK),
-		RemoteProblemId: "A1002",
+		RemoteProblemId: "A1003",
 		Enforce:         true,
 	}
 	resp, err := rpc_remote.RemoteServiceClient.CrawlProblem(context.Background(), req)
