@@ -1,6 +1,7 @@
 package rpc_remote
 
 import (
+	"github.com/ecnuvj/vhoj_common/pkg/common/constants/rpc_config"
 	"github.com/ecnuvj/vhoj_rpc/model/remotepb"
 	"google.golang.org/grpc"
 	"log"
@@ -9,7 +10,7 @@ import (
 var RemoteServiceClient remotepb.RemoteServiceClient
 
 func Init() {
-	conn, err := grpc.Dial(":50005", grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(rpc_config.RemoteRpc.GetFullAddress(), grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
